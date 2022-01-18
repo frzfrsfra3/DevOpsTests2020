@@ -1,0 +1,40 @@
+    version: "3.5"
+    services:
+      php_alpine:
+          build: 
+            context: .
+            dockerfile: Dockerfile-alpine2
+          container_name: php_alpine
+        #  working_dir: /usr/share/nginx/blog
+          networks:
+            - blog
+          ports:
+            - "9050:80"
+            - "4433:443"
+      mysql:
+          build:
+            dockerfile: Dockerfile-mysql
+            context: .
+          container_name: mysql_alpine
+          networks:
+            - blog
+          volumes:
+            - dbdata:/var/lib/mysql/
+       #     - ./data:/var/lib/mysql/
+        #    - ./data:/var/lib/mysql/
+         #    - ./mysqlconfig:/etc/mysql/conf.d
+          ports:
+            - "3310:3306"
+          environment:
+         #   - MYSQL_ROOT_HOST=%
+        #    - MYSQL_HOST=blog_mysql
+         #   - MYSQL_DATABASE=test
+            - MYSQL_ROOT_PASSWORD=P@ssw0rd
+         #   - MYSQL_USER=test
+        #    - MYSQL_PASSWORD=test
+    networks:
+      blog:
+        driver: bridge
+    volumes:
+      dbdata: 
+        #./test

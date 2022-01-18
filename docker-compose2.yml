@@ -1,0 +1,15 @@
+version: '3'
+services:
+  webff:
+    build: 
+      dockerfile: Dockerfile-laravel-sample
+      context: .
+    ports:
+      - "9090:80"
+    volumes:
+      - /var/lib/docker/disk01:/var/www/html
+ #   command: bash -c " git clone http://192.168.43.249/root/laravel-sample.git  /var/lib/docker"
+#    command: bash -c ' sshpass -p $password ssh $user@$remote_ip "sshpass -p P@ssw0rd  git --git-dir=/var/www/html/laravello6/.git --work-tree=/var/www/html/laravello6 pull || mkdir -p /var/www/html/laravello6 | git clone http://192.168.43.249/root/laravel-sample.git  /var/www/html/laravello6 "'
+  #command:
+   #   - pwd
+      #- ls

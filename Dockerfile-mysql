@@ -1,0 +1,5 @@
+FROM mysql:5.7
+COPY industry.sql /industry.sql
+#RUN  mysql -uroot -pP@ssw0rd  -e "create database 'foo'"
+#RUN mysql -uroot -pP@ssw0rd foo < /industry.sql
+#COPY data/somedb2/ /var/lib/mysql

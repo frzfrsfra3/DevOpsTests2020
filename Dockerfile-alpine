@@ -1,0 +1,110 @@
+FROM nginx:alpine
+#COPY . /usr/share/nginx/html
+
+RUN apk add git 
+RUN mkdir /nginx_php
+
+RUN chmod -R 0777 /nginx_php/
+
+
+RUN apk --no-cache add \
+        php7 \
+        php7-ctype \
+        php7-curl \
+        php7-dom \
+        php7-fileinfo \
+        php7-ftp \
+        php7-iconv \
+        php7-json \
+        php7-mbstring \
+        php7-mysqlnd \
+        php7-openssl \
+        php7-pdo \
+        php7-pdo_sqlite \
+        php7-pear \
+        php7-phar \
+        php7-posix \
+        php7-session \
+        php7-simplexml \
+        php7-sqlite3 \
+        php7-tokenizer \
+        php7-xml \
+        php7-xmlreader \
+        php7-xmlwriter \
+        php7-zlib
+
+#RUN cd /tmp && git clone https://github.com/systemd/systemd
+
+#RUN echo "unicode=\"YES\"" >> /etc/rc.conf && \
+ #   apk add --no-cache --virtual .build_deps \
+  #      autoconf file g++ gcc libc-dev make pkgconf python3 ninja \
+   #     util-linux pciutils usbutils coreutils binutils findutils grep \
+  #      build-base gcc abuild binutils binutils-doc gcc-doc gperf libcap libcap-dev \
+    #    valgrind-dev \
+   # && \
+#    pip3 install meson
+
+
+RUN chown -R nginx:nginx /nginx_php/
+
+
+COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
+
+RUN apk add git
+
+RUN apk add bash
+
+RUN apk add composer
+
+RUN apk add supervisor
+
+RUN apk search php7 | more
+
+RUN apk add php7 php7-fpm php7-opcache
+
+#RUN apk add php74
+
+RUN apk add php7-gd php7-mysqli php7-zlib php7-curl php7-json
+
+RUN apk  add php7-xmlwriter \
+            php7-simplexml \
+            php7-fileinfo \
+            php7-tokenizer 
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+
+
+
+
+RUN git clone http://192.168.1.250/root/laravel-sample.git  /nginx_php/ 
+
+#RUN git clone https://admin@example.com:FRZfrs9297@82.137.226.40:44357/tit/laravel-backend-boilerplate
+#RUN composer install -d /nginx_php/ && php  /nginx_php/artisan key:generate
+
+RUN apk add openrc
+
+RUN chmod -R 0777 /nginx_php/
+
+COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY supervisord_alpine.conf /etc/supervisord.conf
+
+#COPY php.ini  /etc/php7/php.ini
+
+#COPY . /usr/share/nginx/html
+
+#COPY ./laravel-sample /usr/share/nginx/html
+
+#RUN nginx
+#RUN php7-fpm -F
+#CMD ["php-fpm7", "-F"]
+
+
+
+#EXPOSE 80 9000
+
+#CMD ["php-fpm7", "-F"]
+
+CMD ["supervisord", "-n"]
